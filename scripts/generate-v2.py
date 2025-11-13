@@ -12,7 +12,7 @@ import shutil
 
 import zarr
 import numpy as np
-from numcodecs import Zlib, Blosc, LZ4, Zstd, VLenUTF8
+from numcodecs import Zlib, Blosc, LZ4, Zstd, VLenUTF8, Delta
 
 SELF_DIR = pathlib.Path(__file__).parent
 
@@ -159,6 +159,24 @@ root.create_dataset(
     data=np.arange(27).reshape(3, 3, 3),
     dtype="i2",
     chunks=(3, 3, 1),
+)
+
+root.create_dataset(
+    "3d.chunked.mixed.i2.C.delta",
+    data=np.arange(27).reshape(3, 3, 3),
+    order="C",
+    dtype="i2",
+    chunks=(3, 3, 1),
+    filters=[Delta(dtype="i2")],
+)
+
+root.create_dataset(
+    "3d.chunked.mixed.i2.F.delta",
+    data=np.arange(27).reshape(3, 3, 3),
+    order="F",
+    dtype="i2",
+    chunks=(3, 3, 1),
+    filters=[Delta(dtype="i2")],
 )
 
 # 3d.chunked.mixed.i2.F

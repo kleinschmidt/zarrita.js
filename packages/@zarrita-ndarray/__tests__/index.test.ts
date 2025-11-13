@@ -247,6 +247,16 @@ describe("ndarray", () => {
 		expect(res.shape).toStrictEqual([3, 3, 3]);
 	});
 
+	it("3d.chunked.mixed.i2.C.delta", async () => {
+		let arr = await zarr.open.v2(store.resolve("/3d.chunked.mixed.i2.C.delta"), {
+			kind: "array",
+		});
+		let res = await get(arr);
+		expect(res.data).toStrictEqual(new Int16Array(range(27)));
+		expect(res.shape).toStrictEqual([3, 3, 3]);
+		expect(res.stride).toStrictEqual([9, 3, 1]);
+	});
+
 	it("3d.chunked.mixed.i2.C", async () => {
 		let arr = await zarr.open.v2(store.resolve("/3d.chunked.mixed.i2.C"), {
 			kind: "array",
@@ -259,6 +269,21 @@ describe("ndarray", () => {
 
 	it("3d.chunked.mixed.i2.F", async () => {
 		let arr = await zarr.open.v2(store.resolve("/3d.chunked.mixed.i2.F"), {
+			kind: "array",
+		});
+		let res = await get(arr);
+		// biome-ignore format: the array should not be formatted
+		expect(res.data).toStrictEqual(new Int16Array([
+			0, 9, 18, 3, 12, 21, 6, 15, 24,
+			1, 10, 19, 4, 13, 22, 7, 16, 25,
+			2, 11, 20, 5, 14, 23, 8, 17, 26,
+		]));
+		expect(res.shape).toStrictEqual([3, 3, 3]);
+		expect(res.stride).toStrictEqual([1, 3, 9]);
+	});
+
+	it("3d.chunked.mixed.i2.F.delta", async () => {
+		let arr = await zarr.open.v2(store.resolve("/3d.chunked.mixed.i2.F.delta"), {
 			kind: "array",
 		});
 		let res = await get(arr);
